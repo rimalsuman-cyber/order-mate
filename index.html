@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>OrderMate POS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" data-i18n="appSubtitle">Restaurant order management</p>
+        <h1>OrderMate</h1>
+      </div>
+      <div class="top-actions">
+        <div class="service-pill">
+          <span class="live-dot"></span>
+          <span data-i18n="offline">Offline</span>
+        </div>
+        <label class="compact-setting" for="language-select">
+          <span class="globe-icon" aria-hidden="true">🌐</span>
+          <span class="sr-only" data-i18n="language">Language</span>
+          <select id="language-select" aria-label="Language">
+            <option value="EN">EN</option>
+            <option value="DE">DE</option>
+            <option value="IT">IT</option>
+            <option value="FR">FR</option>
+            <option value="TR">TR</option>
+            <option value="AL">AL</option>
+          </select>
+        </label>
+        <label class="currency-setting" for="currency-select">
+          <span class="sr-only" data-i18n="currencySetting">Currency setting</span>
+          <select id="currency-select" aria-label="Currency setting">
+            <option value="CHF">CHF</option>
+            <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+            <option value="GBP">GBP</option>
+            <option value="AED">AED</option>
+            <option value="RON">LEU</option>
+            <option value="HUF">HUF</option>
+            <option value="INR">INR</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <section class="screen active" id="waiter-screen" aria-labelledby="waiter-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="waiterStation">Waiter station</p>
+            <h2 id="waiter-title" data-i18n="takeOrder">Take Order</h2>
+          </div>
+          <button class="ghost-btn" id="clear-order-btn" type="button" data-i18n="clear">Clear</button>
+        </div>
+
+        <div class="order-context">
+          <label>
+            <span data-i18n="table">Table</span>
+            <select id="table-select"></select>
+          </label>
+          <label>
+            <span data-i18n="waiter">Waiter</span>
+            <select id="waiter-select">
+              <option value="W01 - Maya">W01 - Maya</option>
+              <option value="W02 - Leo">W02 - Leo</option>
+              <option value="W03 - Aria">W03 - Aria</option>
+              <option value="W04 - Noah">W04 - Noah</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="tabs" id="category-tabs" role="tablist" aria-label="Menu categories"></div>
+        <label class="menu-picker">
+          <span data-i18n="menuItem">Menu item</span>
+          <select id="menu-item-select"></select>
+        </label>
+        <div class="menu-grid" id="menu-grid"></div>
+
+        <aside class="cart-panel" aria-labelledby="cart-title">
+          <div class="cart-header">
+            <div>
+              <p class="eyebrow" data-i18n="reviewBefore">Review before sending</p>
+              <h3 id="cart-title" data-i18n="currentOrder">Current Order</h3>
+            </div>
+            <div class="cart-tools">
+              <button class="icon-btn print-btn" id="print-order-btn" type="button" title="Print order ticket" aria-label="Print order ticket">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 8V3h10v5"></path>
+                  <path d="M6 17H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                  <path d="M7 14h10v7H7z"></path>
+                  <path d="M17 11h.01"></path>
+                </svg>
+              </button>
+              <strong id="cart-total">$0.00</strong>
+            </div>
+          </div>
+          <div id="cart-items" class="cart-items empty-state">No items added yet.</div>
+          <label class="wide-label">
+            <span data-i18n="orderNotes">Order notes</span>
+            <textarea id="order-note" rows="3" placeholder="Allergy, timing, or service note"></textarea>
+          </label>
+          <button class="primary-btn full" id="send-order-btn" type="button" data-i18n="sendOrder">Send Order to Kitchen</button>
+          <div class="status-strip" id="waiter-status-strip"></div>
+        </aside>
+      </section>
+
+      <section class="screen" id="kitchen-screen" aria-labelledby="kitchen-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="kitchenDisplay">Kitchen display</p>
+            <h2 id="kitchen-title" data-i18n="liveOrders">Live Orders</h2>
+          </div>
+          <button class="ghost-btn" id="refresh-kitchen-btn" type="button" data-i18n="refresh">Refresh</button>
+        </div>
+        <div class="kitchen-columns" id="kitchen-orders"></div>
+      </section>
+
+      <section class="screen" id="admin-screen" aria-labelledby="admin-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="managerTools">Manager tools</p>
+            <h2 id="admin-title" data-i18n="menuSales">Menu & Sales</h2>
+          </div>
+          <button class="ghost-btn" id="reset-demo-btn" type="button" data-i18n="resetDemo">Reset Demo</button>
+        </div>
+
+        <div class="admin-layout">
+          <form class="admin-form" id="menu-form">
+            <h3 id="form-title" data-i18n="addMenuItem">Add Menu Item</h3>
+            <input type="hidden" id="item-id">
+            <label>
+              <span data-i18n="itemName">Item name</span>
+              <input id="item-name" type="text" required placeholder="Truffle pasta">
+            </label>
+            <label>
+              <span data-i18n="category">Category</span>
+              <div class="inline-input">
+                <select id="item-category"></select>
+                <button class="icon-btn" id="add-category-btn" type="button" title="Add category">+</button>
+              </div>
+            </label>
+            <label>
+              <span data-i18n="price">Price</span>
+              <input id="item-price" type="number" min="0" step="0.01" required placeholder="14.50">
+            </label>
+            <label class="toggle-row">
+              <input id="item-available" type="checkbox" checked>
+              <span data-i18n="available">Available</span>
+            </label>
+            <div class="form-actions">
+              <button class="primary-btn" type="submit" data-i18n="saveItem">Save Item</button>
+              <button class="ghost-btn" id="cancel-edit-btn" type="button" data-i18n="cancel">Cancel</button>
+            </div>
+          </form>
+
+          <div class="admin-card">
+            <h3 data-i18n="menuItems">Menu Items</h3>
+            <div id="admin-menu-list" class="admin-list"></div>
+          </div>
+
+          <div class="admin-card">
+            <div class="metric-row">
+              <div>
+                <p class="eyebrow" data-i18n="completedOrders">Completed orders</p>
+                <h3 id="history-count">0</h3>
+              </div>
+              <div>
+                <p class="eyebrow" data-i18n="totalSales">Total sales</p>
+                <h3 id="total-sales">$0.00</h3>
+              </div>
+            </div>
+            <div id="order-history" class="history-list"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Primary">
+      <button class="nav-btn active" data-screen="waiter-screen" type="button">
+        <span data-i18n="navTake">Take</span>
+        <span data-i18n="navOrder">Order</span>
+      </button>
+      <button class="nav-btn" data-screen="kitchen-screen" type="button">
+        <span data-i18n="navKitchen">Kitchen</span>
+        <span data-i18n="navLive">Live</span>
+      </button>
+      <button class="nav-btn" data-screen="admin-screen" type="button">
+        <span data-i18n="navAdmin">Admin</span>
+        <span data-i18n="navManage">Manage</span>
+      </button>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>

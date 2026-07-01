@@ -514,7 +514,7 @@ function renderMenuItemSelect(items) {
   items.forEach((item) => {
     const option = document.createElement("option");
     option.value = item.id;
-    option.textContent = `${foodText(item.name)} - ${money(item.price)}${item.available ? "" : ` (${t("unavailable")})`}`;
+    option.textContent = `${foodText(item.name)}${item.available ? "" : ` (${t("unavailable")})`}`;
     els.menuItemSelect.append(option);
   });
 
@@ -859,7 +859,7 @@ function renderAdmin() {
     row.innerHTML = `
       <div>
         <h3>${escapeHtml(foodText(item.name))}</h3>
-        <p class="menu-meta">${escapeHtml(categoryText(item.category))} - ${money(item.price)}</p>
+        <p class="menu-meta">${escapeHtml(categoryText(item.category))}</p>
         <p class="availability ${item.available ? "" : "off"}">${item.available ? t("available") : t("unavailable")}</p>
       </div>
       <div class="item-actions">
